@@ -1,10 +1,11 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 
+// create server
 const app = express();
-
 app.use(express.json());
 
+// database in memory
 const customers = [];
 
 //Middleware
@@ -19,6 +20,7 @@ function verifyIfExistsAccountCPF(req, res, next) {
   return next();
 }
 
+// requests
 app.post('/account', (req, res) => {
   const { name, cpf } = req.body;
 
@@ -45,4 +47,21 @@ app.get('/statement/', verifyIfExistsAccountCPF, (req, res) => {
   return res.json(customer.statement);
 });
 
+app.post('/deposit', verifyIfExistsAccountCPF, (req, res) => {
+  const { customer } = req;
+  const { description, amount } = req.body;
+
+  const statementOperation = {
+    description,
+    amount,
+    created_at: new Date(),
+    type: 'credit',
+  };
+
+  customer.statement.push(statementOperation);
+
+  return res.status(201).send();
+});
+
+// port listen
 app.listen(3333);
