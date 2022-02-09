@@ -1,1 +1,1 @@
-## Reposírio de códigos do ignite de nodejs
+## Repositório de códigos do ignite de nodejs
