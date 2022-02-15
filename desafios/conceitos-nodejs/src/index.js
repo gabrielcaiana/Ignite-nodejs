@@ -26,7 +26,7 @@ app.post("/users", (request, response) => {
   const userAlreadyExists = users.some((user) => user.username === username);
 
   if (userAlreadyExists)
-    return response.status(400).send({ error: "User already exists!" });
+    return response.status(400).json({ error: "User already exists!" });
 
   const user = {
     id: uuidv4(),
@@ -59,7 +59,7 @@ app.post("/todos", checksExistsUserAccount, (request, response) => {
 
   user.todos.push(todo);
 
-  return response.status(201).send(todo);
+  return response.status(201).json(todo);
 });
 
 app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
@@ -98,7 +98,7 @@ app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
   const todoIndex = user.todos.findIndex((todo) => todo.id === id);
 
   if (todoIndex === -1)
-    return response.status(404).send({ error: "Todo not found!" });
+    return response.status(404).json({ error: "Todo not found!" });
 
   user.todos.splice(todoIndex, 1);
 
